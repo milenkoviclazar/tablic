@@ -1,6 +1,16 @@
 #include <vector>
+#include <iostream>
 
 using namespace std;
+
+void deal(vector<int> &deck, vector<int> &first, vector<int> &second) {
+    for (int i = 0; i < 6; i++) {
+        first.push_back(deck.back());
+        deck.pop_back();
+        second.push_back(deck.back());
+        deck.pop_back();
+    }
+}
 
 // special scoring of 2 of clubs and 10 of diamonds is ignored
 pair<int, int> try_move(int card, int mask, int aces_mask, vector<int> &hand, vector<int> &table) {
@@ -48,7 +58,9 @@ pair<int, int> try_move(int card, int mask, int aces_mask, vector<int> &hand, ve
 }
 
 void do_move(int card, int mask, vector<int> &hand, vector<int> &table) {
+//    cout << "1 " << endl;
     hand.erase(find(hand.begin(), hand.end(), card));
+//    cout << "2 " << endl;
     vector<int> new_table;
     for (int i = 0; i < table.size(); i++) {
         if ((mask & (1 << i)) == 0) {
@@ -59,4 +71,5 @@ void do_move(int card, int mask, vector<int> &hand, vector<int> &table) {
         new_table.push_back(card);
     }
     table = new_table;
+//    cout << "CURR CARD: " << card << endl;
 }

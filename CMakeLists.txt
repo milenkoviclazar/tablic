@@ -4,8 +4,8 @@ project(tablic)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES main.cpp
-        backtrack.cpp
-        backtrack.h
+        backtrack6.cpp
+        backtrack6.h
         greedy.cpp
         greedy.h
         utils.cpp

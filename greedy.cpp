@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 
 #include "utils.h"
 
@@ -22,6 +23,9 @@ pair<int, int> greedy_simple(vector<int> &table, vector<int> &hand) {
             }
         }
     }
+//    cout << "GRDY _OUT " << endl;
+
     do_move(hand[best_idx], best_mask, hand, table);
+//    cout << "GRDY _OUT " << endl;
     return best_score;
 }

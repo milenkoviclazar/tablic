@@ -3,6 +3,7 @@
 #include <algorithm>
 
 #include "utils.h"
+#include "backtrack6.h"
 #include "backtrack.h"
 #include "greedy.h"
 
@@ -18,33 +19,31 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
         table.push_back(deck.back());
         deck.pop_back();
     }
-    int last_player = 0;
+    int last_player_scored = 0;
     for (int move = 0; move < 48; move++) {
+//        cout << first.size() << " " << second.size() << endl;
         for (int i = 0; i < table.size(); i++) {
             cout << table[i] << " ";
         } cout << endl;
         if (curr_player == 0 && first.empty()) {
-            for (int i = 0; i < 6; i++) {
-                first.push_back(deck.back());
-                deck.pop_back();
-                second.push_back(deck.back());
-                deck.pop_back();
-            }
+            deal(deck, first, second);
         }
+
         pair<int, int> tmp_score;
+
         if (curr_player == 0) {
             tmp_score = greedy_simple(table, first);
             score.first.first += tmp_score.first;
             score.first.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {
-                last_player = 0;
+                last_player_scored = 0;
             }
         } else {
-            tmp_score = greedy_simple(table, second);
+            tmp_score = backtrack6(table, second, first);
             score.second.first += tmp_score.first;
             score.second.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {
-                last_player = 1;
+                last_player_scored = 1;
             }
         }
         curr_player ^= 1;
@@ -58,7 +57,7 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
             remaining_valuables++;
         }
     }
-    if (last_player == 0) {
+    if (last_player_scored == 0) {
         score.first.first += remaining_valuables;
         score.first.second += table.size();
     } else {
