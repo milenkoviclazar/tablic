@@ -4,11 +4,13 @@ project(tablic)
 set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES main.cpp
-        backtrack6.cpp
-        backtrack6.h
+        utils.cpp
+        utils.h
         greedy.cpp
         greedy.h
-        utils.cpp
-        utils.h)
+        backtrack6.cpp
+        backtrack6.h
+        backtrack.cpp
+        backtrack.h)
 
 add_executable(tablic ${SOURCE_FILES})

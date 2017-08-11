@@ -58,9 +58,9 @@ pair<int, int> try_move(int card, int mask, int aces_mask, vector<int> &hand, ve
 }
 
 void do_move(int card, int mask, vector<int> &hand, vector<int> &table) {
-//    cout << "1 " << endl;
+//    cout << "BEF ERASE " << endl;
     hand.erase(find(hand.begin(), hand.end(), card));
-//    cout << "2 " << endl;
+//    cout << "AFT ERASE " << endl;
     vector<int> new_table;
     for (int i = 0; i < table.size(); i++) {
         if ((mask & (1 << i)) == 0) {

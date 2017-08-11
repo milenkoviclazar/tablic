@@ -22,6 +22,7 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
     int last_player_scored = 0;
     for (int move = 0; move < 48; move++) {
 //        cout << first.size() << " " << second.size() << endl;
+        cout << "TABLE: ";
         for (int i = 0; i < table.size(); i++) {
             cout << table[i] << " ";
         } cout << endl;
@@ -32,14 +33,16 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
         pair<int, int> tmp_score;
 
         if (curr_player == 0) {
-            tmp_score = greedy_simple(table, first);
+//            tmp_score = greedy_simple(table, first);
+            tmp_score = backtrack(table, first, second, deck, curr_player == 0);
             score.first.first += tmp_score.first;
             score.first.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {
                 last_player_scored = 0;
             }
         } else {
-            tmp_score = backtrack6(table, second, first);
+//            tmp_score = backtrack(table, second, first, deck, curr_player == 0);
+            tmp_score = greedy_simple(table, second);
             score.second.first += tmp_score.first;
             score.second.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {

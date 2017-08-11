@@ -41,3 +41,5 @@ tex/samples/
 cmake-build-debug/
 cmake-build-release/
 
+tex/samples/
+tex/TODO

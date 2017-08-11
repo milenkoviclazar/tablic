@@ -7,7 +7,7 @@ using namespace std;
 #include "greedy.h"
 #include "utils.h"
 
-map<tuple<vector<int>, vector<int>, vector<int>>, tuple<int, int, pair<int, int>>> memo;
+map<tuple<vector<int>, vector<int>, vector<int>>, tuple<int, int, pair<int, int>>> memo6;
 
 pair<int, int> backtrack6_helper(vector<int> &table,
                                  vector<int> &hand,
@@ -17,8 +17,8 @@ pair<int, int> backtrack6_helper(vector<int> &table,
         return make_pair(0, 0);
     }
     auto tpl = make_tuple(table, hand, other);
-    if (memo.find(tpl) != memo.end()) {
-        auto best_move = memo[tpl];
+    if (memo6.find(tpl) != memo6.end()) {
+        auto best_move = memo6[tpl];
         int idx = get<0>(best_move);
         int mask = get<1>(best_move);
         pair<int, int> score = get<2>(best_move);
@@ -60,13 +60,13 @@ pair<int, int> backtrack6_helper(vector<int> &table,
     }
 
     do_move(hand[best_idx], best_mask, hand, table);
-    memo[tpl] = make_tuple(best_idx, best_mask, best_curr_score);
+    memo6[tpl] = make_tuple(best_idx, best_mask, best_curr_score);
     return best_curr_score;
 }
 
-pair<int, int> backtrack6(vector<int, allocator<int>> &table,
-                          vector<int, allocator<int>> &hand,
-                          vector<int, allocator<int>> &other) {
+pair<int, int> backtrack6(vector<int> &table,
+                          vector<int> &hand,
+                          vector<int> &other) {
 
     pair<int, int> score = backtrack6_helper(table, hand, other);
 //    cout << score.first << " " << score.second << endl;
