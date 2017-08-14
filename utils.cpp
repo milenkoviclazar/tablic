@@ -73,3 +73,14 @@ void do_move(int card, int mask, vector<int> &hand, vector<int> &table) {
     table = new_table;
 //    cout << "CURR CARD: " << card << endl;
 }
+
+vector<int> generate_deck() {
+    vector<int> deck;
+    for (int i = 2; i <= 14; i++) {
+        for (int j = 0; j < 4; j++) {
+            deck.push_back(i);
+        }
+    }
+    random_shuffle(deck.begin(), deck.end());
+    return deck;
+}

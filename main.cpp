@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <ctime>
 
 #include "utils.h"
 #include "backtrack6.h"
@@ -8,6 +9,8 @@
 #include "greedy.h"
 
 using namespace std;
+
+int first_timer, second_timer;
 
 pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
     vector<int> first;
@@ -22,10 +25,10 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
     int last_player_scored = 0;
     for (int move = 0; move < 48; move++) {
 //        cout << first.size() << " " << second.size() << endl;
-        cout << "TABLE: ";
-        for (int i = 0; i < table.size(); i++) {
-            cout << table[i] << " ";
-        } cout << endl;
+//        cout << "TABLE: ";
+//        for (int i = 0; i < table.size(); i++) {
+//            cout << table[i] << " ";
+//        } cout << endl;
         if (curr_player == 0 && first.empty()) {
             deal(deck, first, second);
         }
@@ -33,16 +36,19 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
         pair<int, int> tmp_score;
 
         if (curr_player == 0) {
-//            tmp_score = greedy_simple(table, first);
-            tmp_score = backtrack(table, first, second, deck, curr_player == 0);
+            clock_t begin = clock();
+            tmp_score = backtrack6(table, first, second);
+            first_timer += clock() - begin;
+
             score.first.first += tmp_score.first;
             score.first.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {
                 last_player_scored = 0;
             }
         } else {
-//            tmp_score = backtrack(table, second, first, deck, curr_player == 0);
+            clock_t begin = clock();
             tmp_score = greedy_simple(table, second);
+            second_timer += clock() - begin;
             score.second.first += tmp_score.first;
             score.second.second += tmp_score.second;
             if (tmp_score > make_pair(0, 0)) {
@@ -71,19 +77,33 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
 }
 
 int main() {
-    vector<int> deck;
-    for (int i = 2; i <= 14; i++) {
-        for (int j = 0; j < 4; j++) {
-            deck.push_back(i);
+    int games_played = 50;
+    int first_wins = 0;
+    int second_wins = 0;
+    int draws = 0;
+    for (int game = 0; game < games_played; game++) {
+        vector<int> deck;
+        for (int i = 2; i <= 14; i++) {
+            for (int j = 0; j < 4; j++) {
+                deck.push_back(i);
+            }
         }
+        random_shuffle(deck.begin(), deck.end());
+        pair<pair<int, int>, pair<int, int>> score = play_game(deck);
+        if (score.first > score.second) {
+            cout << "First wins!" << endl;
+            first_wins++;
+        } else if (score.second > score.first) {
+            cout << "Second wins!" << endl;
+            second_wins++;
+        } else {
+            cout << "Draw" << endl;
+            draws++;
+        }
+        printf("(%d, %d) - (%d, %d)\n", score.first.first, score.first.second, score.second.first, score.second.second);
     }
-    random_shuffle(deck.begin(), deck.end());
-    pair<pair<int, int>, pair<int, int>> score = play_game(deck);
-    if (score.first > score.second) {
-        cout << "First wins!" << endl;
-    } else {
-        cout << "Second wins!" << endl;
-    }
-    printf("(%d, %d) - (%d, %d)\n", score.first.first, score.first.second, score.second.first, score.second.second);
+    cout << "Score: " << first_wins << " - " << second_wins << endl;
+    cout << (double) first_timer / games_played / CLOCKS_PER_SEC << " "
+         << (double) second_timer / games_played / CLOCKS_PER_SEC << endl;
     return 0;
 }
