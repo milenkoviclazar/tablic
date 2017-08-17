@@ -1,0 +1,370 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{appendix}
+\usepackage[
+format=plain,
+labelfont=bf,
+textfont=it
+]{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\usepackage{amssymb}
+\usepackage[final]{pdfpages}
+
+
+\graphicspath{ {files/} }
+\newcommand{\quotesrb}[1]{\glqq#1\grqq}
+\newcommand{\card}[2]{\includegraphics[height=2cm]{card-#1_#2}}
+\newcommand{\cardsm}[2]{\includegraphics[height=1.35cm]{card-#1_#2}}
+\newcommand{\cardmed}[2]{\includegraphics[height=1.75cm]{card-#1_#2}}
+
+\algnewcommand{\algorithmicand}{\textbf{and }}
+\algnewcommand{\algorithmicor}{\textbf{or }}
+\algnewcommand{\algorithmicbreak}{\textbf{break }}
+\algnewcommand{\algorithmiccontinue}{\textbf{continue }}
+\algnewcommand{\algorithmicnot}{\textbf{not }}
+
+\algnewcommand{\Or}{\algorithmicor}
+\algnewcommand{\And}{\algorithmicand}
+\algnewcommand{\Break}{\State\algorithmicbreak}
+\algnewcommand{\Continue}{\State\algorithmiccontinue}
+\algnewcommand{\Not}{\State\algorithmicnot}
+
+\begin{document}
+\renewcommand{\contentsname}{Садржај}
+\renewcommand{\refname}{Литература}
+\renewcommand{\abstractname}{Апстракт}
+\renewcommand{\figurename}{Слика}
+\renewcommand{\appendixtocname}{Додаци}
+\renewcommand{\lstlistingname}{Датотека}
+\renewcommand{\tablename}{Табела}
+\renewcommand{\proofname}{Доказ}
+
+
+\title{Поређење похлепних, бектрек и генетских алгоритама за стратегиjу игре таблић и њених модификациjа}
+\subtitle{Дипломски рад}
+\author{Лазар Миленковић}
+\institute{Рачунарски факултет}
+\date{\today}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Правила игре}
+Игра се једним шпилом од 52 карте. На почетку игре се поделе 4 карте на талон, након чега се сваком играчу подели по 6 карата. Када играчи истроше карте из руке, поново им се подели по 6 карата. Игра се завршава када се истроши цео шпил, односно када прођу 4 руке.
+
+У сваком потезу, противник изабере једну карту из руке. Уколико на талону постоји један или више скупова карата који у збиру дају вредност његове карте из руке, он може сакупити те карте (заједно са картом из руке). Уколико не постоји такав скуп, противник избаци изабрану карту на талон.
+
+Победник је играч који сакупи највише штихова. Уколико оба играча имају исти број штихова, победник је играч који има више карата укупно.
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+Пошто је победник играч који сакупи највише штихова, углавном је оптимално покупити све могуће комбинације са талона. 
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+
+\begin{figure}[htbp]
+	\centering
+	\card{6}{club}
+	\card{2}{diamond}
+	\card{jack}{club}
+	\card{8}{spade}
+	\card{3}{heart}
+	\card{7}{diamond}
+	\card{4}{heart}
+	\card{1}{spade}
+	
+	\card{8}{heart}
+	\caption{Изглед табле представљен је у горњем реду, а корисник жели одиграти 8 срце. На талону се налазе следеће групе које одговарају осмици: шест детелина и два каро, 8 лист, 7 каро и ас лист, док је последња одговарајућа група 3 херц, 4 херц и ас лист. Последње две групе имају заједничког аса тако да се играч мора одлучити за само једну од њих, док су преостале две групе без заједничких чланова тако да их може носити обе. Играч се такође може одлучити и да не носи неку од група, али то обично није оптимална стратегија.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+Уколико играч нема избора да носи карте са талона, тада треба да изабере карту која оставља противнику најмање шансе.
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+\begin{figure}[htbp]
+	\centering
+	\card{king}{club}
+	\card{queen}{heart}
+	\card{10}{diamond}
+	
+	\card{7}{diamond}
+	\card{1}{spade}
+	\card{9}{heart}
+	\card{jack}{spade}
+	\card{2}{club}
+	\card{3}{diamond}
+	
+	\caption{На талону се налазе краљ, краљица и десетка. Играч у својој руци нема ниједну карту којом може носити било шта са талона и треба да се одлучи коју ће карту одиграти.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+Памћење досадашњих карата може бити корисно. Ката противник зна да се нека карта неће више појављивати, тада може изабрати мало бољи потез.
+\end{frame}
+
+\begin{frame}
+\frametitle{Стратегије које користе играчи}
+\begin{figure}[htbp]
+	\centering
+	\card{queen}{heart}
+	\card{7}{diamond}
+	\card{2}{spade}
+	
+	\card{queen}{club}
+	\card{9}{spade}
+	\card{queen}{diamond}
+	\caption{Ако корисник зна да је до сада прошла већ једна дама, тада може бити сигуран да противник у својој руци нема карту којом може покупити даму са талона. У овом случају оптимално му је да најпре избаци једну даму на талон, а тек у наредном потезу покупи обе даме одједном (и трећу из руке).}
+\end{figure}
+\end{frame}
+
+\begin{frame}[allowframebreaks] 
+\frametitle{Похлепни алгоритам}
+За сваку од могућих карата из руке:
+\begin{itemize}
+	\item {Испробају се сви одговарајући подскупови карата са талона и изабере се онај који носи највише поена.}
+\end{itemize}
+
+Потребно је још водити рачуна и о асовима, јер они могу имати вредности 1 и 11.
+\end{frame}
+
+\begin{frame}[allowframebreaks] 
+\frametitle{Похлепни алгоритам}
+
+\begin{algorithmic}
+	\Function{PohlepniAlgoritam}{$tabla, ruka$}
+	\State $najbolji\_skor \gets (0, 0)$
+	\State $najbolja\_maska \gets 0$
+	\State $najbolji\_indeks \gets 0$
+	\State $broj\_asova \gets 0$
+	\For {$i \in \{0, 1, 2, \ldots tabla.len - 1\} $}
+	\If {$tabla[i] = 1$}
+	\State $broj\_asova \gets broj\_asova + 1$
+	\EndIf
+	\EndFor
+	
+	\ForAll{$karta \in ruka$}
+	\For {$maska\_asova \in \{0, 1, 2, \ldots 2^{broj\_asova - 1}\}$}
+	\For {$maska\_table \in \{0, 1, 2, \ldots 2^{tabla.len - 1}\}$}
+	\State $skor \gets$ \\ \hskip\algorithmicindent\hskip\algorithmicindent\hskip\algorithmicindent\Call{ProbajPotez}{$karta, maska\_asova, maska\_table, ruka, tabla$}
+	\If {$skor > najbolji\_skor$}
+	\State $najbolji\_skor \gets skor$
+	\State $najbolji\_indeks \gets i$
+	\State $najbolja\_maska \gets maska\_table$
+	\EndIf
+	\EndFor
+	\EndFor	
+	\EndFor
+	\State\Call{OdigrajPotez}{$ruka[najbolij\_indeks], najbolja\_maska, ruka, tabla$}
+	\EndFunction
+\end{algorithmic}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Рачунање броја поена}
+\begin{algorithmic}
+	
+	\Function{ProbajPotez}{$karta, maska\_asova, maska\_table, ruka, tabla$}
+	\State $skor \gets (0, 0)$ \Comment{број штихова и број карата, редом}
+	\State $suma \gets 0$
+	\State $broj\_asova \gets 0$
+	\For {$i \in \{0, 1, 2, \ldots tabla.len - 1\}$}
+	\If {\Call{ProveriBit}{$maska\_table, i$} = FALSE}
+	\Continue
+	\EndIf
+	\State $vrednost \gets tabla[i]$
+	\If {$vrednost = 11$ }
+	\If {\Call{ProveriBit}{$maska\_table, i$}}
+	\State $vrednost \gets 1$
+	\EndIf
+	\State $broj\_asova \gets broj\_asova + 1$
+	\EndIf
+	\If {$vrednost > karta$}
+	\State\Return IMPOSSIBLE
+	\EndIf
+	\State $suma \gets suma + vrednost$
+	\If {$vrednost = 1$ \Or $vrednost \ge 10$}
+	\State $skor.stihovi \gets skor.stihovi + 1$
+	\EndIf
+	\EndFor
+	
+	\If {$suma \bmod karta \ne 0$} 
+	\State\Return IMPOSSIBLE
+	\EndIf
+	\If {$karta = 1$ \Or $karta \ge 10$}
+	\State $skor.stihovi \gets skor.stihovi + 1$
+	\EndIf
+	\If {\Call{BrojBita}{$maska\_table$} = $table.len$}
+	\State $skor.stihovi \gets skor.stihovi + 1$
+	\EndIf
+	\State\Return $skor$
+	\EndFunction
+\end{algorithmic}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+	\frametitle{Играње потеза}
+	\begin{algorithmic}
+		\Function{OdigrajPotez}{$karta, maska\_table, ruka, tabla$}
+		\State\Call{Obrisi}{ruka, karta}
+		\State $nova\_tabla \gets []$
+		\For {$i \in \{1, 2, 3, \ldots tabla.len - 1\} $}
+		\If { \Call{ProveriBit}{$maska\_table, i$} = FALSE}
+		\State\Call{Dodaj}{$nova\_tabla, tabla[i]$}
+		\EndIf
+		\If {$maska = 0$}
+		\State $nova\_tabla \gets karta$
+		\EndIf
+		\EndFor
+		\State $tabla \gets nova\_tabla$
+		\EndFunction
+	\end{algorithmic}
+\end{frame}
+
+\begin{frame}[allowframebreaks] 
+\frametitle{Бектрек алгоритам}
+За сваку карту из руке и све могуће подскупове карата са талона:
+\begin{itemize}
+	\item {Израчуна се број поена за играча.}
+	\item {Одигра се противников потез.}
+	\item {Позове се бектрек рекурзивно за наредни потез.}
+	\item {Укупан скор је збир освојених поена у тренутном потезу и резултата рекурзивног позива.}
+\end{itemize}
+	
+Изабере се решење које укупно носи највише поена.
+\end{frame}
+
+\begin{frame}[allowframebreaks] 
+\frametitle{Бектрек алгоритам}
+Број начина да се одигра једна рука је $6!$, па је број начина да се одигра цела партија $6!^4 = 268738560000$ што је превише опција за комплетну претрагу. Имплементиран је бектрек који претражује само једну руку.
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Бектрек алгоритам}
+		\begin{algorithmic}
+		\Function{Bektrek}{$ruka, protivnikova\_ruka, tabla$}
+		\If {$ruka.empty$}
+		\State\Return $(0, 0)$
+		\EndIf
+		\State $najbolji\_skor \gets (0, 0)$
+		\State $najbolja\_maska \gets 0$
+		\State $najbolji\_indeks \gets 0$
+		\State $broj\_asova \gets 0$
+		\For {$i \in \{0, 1, 2, \ldots tabla.len - 1\} $}
+		\If {$tabla[i] = 1$}
+		\State $broj\_asova \gets broj\_asova + 1$
+		\EndIf
+		\EndFor
+		
+		\ForAll{$karta \in ruka$}
+		\For {$maska\_asova \in \{0, 1, 2, \ldots 2^{broj\_asova - 1}\}$}
+		\For {$maska\_table \in \{0, 1, 2, \ldots 2^{tabla.len - 1}\}$}
+		\State $karta \gets ruka[i]$
+		\State $skor \gets$ \\
+		\hskip\algorithmicindent\hskip\algorithmicindent\hskip\algorithmicindent\Call{ProbajPotez}{$karta, maska\_asova, maska\_table, ruka, tabla$}
+		\State $n\_prot\_ruka \gets protivnikova\_ruka$
+		\State $n\_tabla \gets tabla$
+		\State\Call{ProtivnikovaStrategija}{$n\_tabla, n\_prot\_ruka$}
+		\State $n\_skor \gets$\Call{Bektrek}{$ruka \setminus karta, n\_prot\_ruka, n\_tabla$}
+		\State $skor \gets skor + n\_skor$
+		\If {$skor > najbolji\_skor$}
+		\State $najbolji\_skor \gets skor$
+		\State $najbolji\_indeks \gets i$
+		\State $najbolja\_maska \gets maska\_table$
+		\EndIf
+		\EndFor
+		\EndFor	
+		\EndFor
+		\State\Call{OdigrajPotez}{$ruka[najbolij\_indeks], najbolja\_maska, ruka, tabla$}
+		\State\Return $najbolij\_skor$
+		\EndFunction
+	\end{algorithmic}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Генетски алгоритам}
+Доста је сличан похлепном алгоритму, са разликом да узима у обзир и противникове карте.
+
+За сваку карту из руке и све могуће подскупове карата са талона:
+\begin{itemize}
+	\item {Израчуна се играчев скор}
+	\item {Одигра се противников потез}
+	\item {Укупан скор се рачуна као $f = s_a \cdot g_0 + k_a \cdot g_1 - s_b \cdot g_2 - k_b \cdot g_3$}, где су $s_a$ и $s_b$ број освојених штихова играча и противника редом, а $k_a$ и $k_b$ број покупљенх карата играча и противника редом. 
+\end{itemize}
+
+Изабере се потез са највећим скором. Проблем је наћи оптималне вредности за $g$.
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Генетски алгоритам}
+\begin{algorithmic}
+	\Function{Genetski}{$ruka, protivnikova\_ruka, tabla, genom$}
+	\State $najbolji\_fit \gets 0$
+	\State $najbolji\_skor \gets (0, 0)$
+	\State $najbolja\_maska \gets 0$
+	\State $najbolji\_indeks \gets 0$
+	\State $broj\_asova \gets 0$
+	\For {$i \in \{0, 1, 2, \ldots tabla.len - 1\} $}
+	\If {$tabla[i] = 1$}
+	\State $broj\_asova \gets broj\_asova + 1$
+	\EndIf
+	\EndFor
+	
+	\ForAll{$karta \in ruka$}
+	\For {$maska\_asova \in \{0, 1, 2, \ldots 2^{broj\_asova - 1}\}$}
+	\For {$maska\_table \in \{0, 1, 2, \ldots 2^{tabla.len - 1}\}$}
+	\State $karta \gets ruka[i]$
+	\State $skor \gets$ \\
+	\hskip\algorithmicindent\hskip\algorithmicindent\hskip\algorithmicindent\hskip\algorithmicindent\Call{ProbajPotez}{$karta, maska\_asova, maska\_table, ruka, tabla$}
+	\State $n\_prot\_ruka \gets protivnikova\_ruka$
+	\State $n\_tabla \gets tabla$
+	\State $p\_skor \gets$ \Call{ProtivnikovaStrategija}{$n\_tabla, n\_prot\_ruka$}
+	\State $fit \gets 0$
+	\State $fit \gets fit + genom[0] \cdot skor.stihovi$
+	\State $fit \gets fit + genom[1] \cdot skor.karte$
+	\State $fit \gets fir - genom[2] \cdot p\_skor.stihovi$
+	\State $fit \gets fir - genom[3] \cdot p\_skor.karte$
+	\If {$fit > najbolji\_fit$}
+	\State $najbolji\_fit \gets fit$
+	\State $najbolji\_skor \gets skor$
+	\State $najbolji\_indeks \gets i$
+	\State $najbolja\_maska \gets maska\_table$
+	\EndIf
+	\EndFor
+	\EndFor	
+	\EndFor
+	\State\Call{OdigrajPotez}{$ruka[najbolij\_indeks], najbolja\_maska, ruka, tabla$}
+	\State\Return $najbolij\_skor$
+	\EndFunction
+\end{algorithmic}
+\end{frame}
+
+\begin{frame}
+\frametitle{Резултати}
+Похлепни и генетски алгоритам раде знатно брже од бектрек алгоритма. Просечно време по партији за генетски и похлепни алгоритам су око 1 милисекунде, док је време извршавања за бектрек 20 секунди.
+
+Број освојених партија:
+\begin{itemize}
+	\item {похлепни - генетски: 445 - 553}
+	\item {похлепни - бектрек: 15 - 35}
+	\item {генетски - бектрек: 18 - 32}
+\end{itemize}
+\end{frame}
+\end{document}

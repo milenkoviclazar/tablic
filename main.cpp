@@ -7,6 +7,7 @@
 #include "backtrack6.h"
 #include "backtrack.h"
 #include "greedy.h"
+#include "genetic.h"
 
 using namespace std;
 
@@ -47,7 +48,7 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
             }
         } else {
             clock_t begin = clock();
-            tmp_score = greedy_simple(table, second);
+            tmp_score = genetic(table, second, first, make_tuple(0.442331, 0.505713, 0.573743, 0.454097));
             second_timer += clock() - begin;
             score.second.first += tmp_score.first;
             score.second.second += tmp_score.second;
@@ -77,7 +78,7 @@ pair<pair<int, int>, pair<int, int>> play_game(vector<int> deck) {
 }
 
 int main() {
-    int games_played = 50;
+    int games_played = 2;
     int first_wins = 0;
     int second_wins = 0;
     int draws = 0;
